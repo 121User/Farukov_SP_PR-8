@@ -1,7 +1,10 @@
 from typing import List, Dict, Optional
 import uuid
 from fa_learn_app.models.product import ProductIn, ProductOut, ProductStorage
-from fa_learn_app.utils.repository_utils import convert_product_storage_to_out, convert_product_in_to_storage, update_product_in_storage
+from fa_learn_app.utils.repository_utils import \
+    convert_product_storage_to_out, \
+    convert_product_in_to_storage, \
+    update_product_in_storage
 
 
 class BaseProductRepository:
@@ -56,14 +59,16 @@ class ProductTmpRepository(BaseProductRepository):
         product_out: ProductOut = convert_product_storage_to_out(product_storage)
         return product_out
 
-    def update_by_id(self, id: uuid.UUID, product_new: ProductIn) -> Optional[ProductStorage]:
+    def update_by_id(self, id: uuid.UUID, product_new: ProductIn) -> Optional[ProductOut]:
         # Получение продукта по id для обновления данных
 
         product_old: ProductStorage = self._dict_products.get(id)
         if product_old is None:
             return "Продукт не найден"
 
-        product_out: ProductOut = update_product_in_storage(id, product_old.secret_token, product_new)
+        product_update: ProductOut = update_product_in_storage(id, product_new)
+        self._dict_products.update({product_update.id: product_update})
+        product_out: ProductOut = convert_product_storage_to_out(product_update)
         return product_out
 
     def delete_by_id(self, id: uuid.UUID) -> str:

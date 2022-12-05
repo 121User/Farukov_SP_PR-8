@@ -21,13 +21,12 @@ def convert_product_in_to_storage(product: ProductIn) -> ProductStorage:
     return product_storage
 
 
-def update_product_in_storage(id_old :uuid.UUID, secret_token_old :str, product_new: ProductIn) -> ProductStorage:
+def update_product_in_storage(id_old :uuid.UUID, product_new: ProductIn) -> ProductStorage:
     # Производит обновление данных
 
     tmp_dict: dict = product_new.dict()
     product_storage = ProductStorage(id=id_old,
                                      created_at=datetime.datetime.now(),
-                                     secret_token=secret_token_old,
                                      **tmp_dict)
 
     return product_storage

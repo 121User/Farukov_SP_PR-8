@@ -2,7 +2,7 @@ from typing import List
 import uuid
 from fastapi import APIRouter, Depends
 from fa_learn_app.dependencies import get_product_repo
-from fa_learn_app.models.product import BaseProduct, ProductIn, ProductOut
+from fa_learn_app.models.product import ProductIn, ProductOut
 from fa_learn_app.repositories.product import BaseProductRepository
 
 router = APIRouter()
@@ -39,7 +39,7 @@ async def create_product(
 @router.put("/product", response_model=ProductOut | str)
 async def update_product(
         id: uuid.UUID,
-        product_in: BaseProduct,
+        product_in: ProductIn,
         product_repo: BaseProductRepository = Depends(get_product_repo),
         ):
 
